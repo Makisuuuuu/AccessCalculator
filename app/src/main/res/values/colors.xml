@@ -2,4 +2,18 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    //Background
+    <color name="translucentBlack">#BF000000</color>
+    <color name="creamWhite">#faf3e0</color>
+    <color name="midnightBlue">#2c3e50</color>
+    <color name="salmonPink">#ff6b61</color>
+    <color name="oceanGreen">#009688</color>
+    <color name="silverBlue">#a3b4c4</color>
+
+    //Text
+    <color name="chocolateBrown">#5D4037</color>
+    <color name="ivoryBeige">#faf3e0</color>
+    <color name="copperBrown">#795548</color>
+
 </resources>

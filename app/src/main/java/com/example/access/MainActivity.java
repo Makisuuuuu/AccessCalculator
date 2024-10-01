@@ -18,7 +18,6 @@ import com.google.android.material.button.MaterialButton;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView resultTv, solutionTv;
-
     Vibrator vibrator;
 
     @Override
@@ -37,25 +36,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resultTv = findViewById(R.id.result_tv);
         solutionTv = findViewById(R.id.solution_tv);
 
-        assignId(R.id.button_c);
-        assignId(R.id.button_del);
-        assignId(R.id.button_percent);
-        assignId(R.id.button_divide);
-        assignId(R.id.button_7);
-        assignId(R.id.button_8);
-        assignId(R.id.button_9);
-        assignId(R.id.button_multiply);
-        assignId(R.id.button_4);
-        assignId(R.id.button_5);
-        assignId(R.id.button_6);
-        assignId(R.id.button_add);
-        assignId(R.id.button_1);
-        assignId(R.id.button_2);
-        assignId(R.id.button_3);
-        assignId(R.id.button_subtract);
-        assignId(R.id.button_point);
-        assignId(R.id.button_0);
-        assignId(R.id.button_equals);
+        assignId(R.id.btn_c);
+        assignId(R.id.btn_del);
+        assignId(R.id.btn_percent);
+        assignId(R.id.btn_divide);
+        assignId(R.id.btn_7);
+        assignId(R.id.btn_8);
+        assignId(R.id.btn_9);
+        assignId(R.id.btn_multiply);
+        assignId(R.id.btn_4);
+        assignId(R.id.btn_5);
+        assignId(R.id.btn_6);
+        assignId(R.id.btn_add);
+        assignId(R.id.btn_1);
+        assignId(R.id.btn_2);
+        assignId(R.id.btn_3);
+        assignId(R.id.btn_subtract);
+        assignId(R.id.btn_point);
+        assignId(R.id.btn_0);
+        assignId(R.id.btn_equals);
     }
 
     void assignId(int id) {
@@ -76,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 solutionTv.setText("");
                 resultTv.setText("0");
                 return;
-            case "DEL":
+            case "⌫":
                 if (!dataToCalculate.isEmpty()) {
                     dataToCalculate = dataToCalculate.substring(0, dataToCalculate.length() - 1);
                 }
@@ -86,10 +85,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 resultTv.setText(result);
                 return;
             default:
-                if (dataToCalculate.equals("0")) {
-                    dataToCalculate = buttonText;
+                if (isOperator(buttonText)) {
+                    if (dataToCalculate.isEmpty()) {
+                        if (buttonText.equals("-")) {
+                            dataToCalculate = "-";
+                        }
+                    } else {
+                        char lastChar = dataToCalculate.charAt(dataToCalculate.length() - 1);
+
+                        if (isOperator(Character.toString(lastChar))) {
+                            if (buttonText.equals("-") && lastChar != '-') {
+                                dataToCalculate += buttonText;
+                            } else {
+                                dataToCalculate = dataToCalculate.substring(0, dataToCalculate.length() - 1) + buttonText;
+                            }
+                        } else {
+                            dataToCalculate += buttonText;
+                        }
+                    }
                 } else {
-                    dataToCalculate = dataToCalculate + buttonText;
+                    if (dataToCalculate.equals("0")) {
+                        dataToCalculate = buttonText;
+                    } else {
+                        dataToCalculate += buttonText;
+                    }
                 }
                 break;
         }
@@ -97,12 +116,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         solutionTv.setText(dataToCalculate);
     }
 
+    private boolean isOperator(String ch) {
+        return ch.equals("+") || ch.equals("-") || ch.equals("×") || ch.equals("÷") || ch.equals("%");
+    }
+
     private void vibrateOnClick() {
         if (vibrator != null) {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
             } else {
-                vibrator.vibrate(50); // For older Android versions
+                vibrator.vibrate(50);
             }
         }
     }
@@ -128,7 +151,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for (int i = 0; i < data.length(); i++) {
             char ch = data.charAt(i);
 
-            if (Character.isDigit(ch) || ch == '.') {
+            if (ch == '-' && (i == 0 || isOperator(Character.toString(data.charAt(i - 1))))) {
+                number.append(ch);
+            } else if (Character.isDigit(ch) || ch == '.') {
                 number.append(ch);
             } else {
                 if (number.length() > 0) {
@@ -152,9 +177,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return result + number;
             case '-':
                 return result - number;
-            case '*':
+            case '×':
                 return result * number;
-            case '/':
+            case '÷':
                 if (number != 0) {
                     return result / number;
                 } else {
@@ -167,4 +192,3 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 }
-
