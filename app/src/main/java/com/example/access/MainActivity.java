@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,8 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import com.google.android.material.button.MaterialButton;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -47,11 +46,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 R.id.btn_7, R.id.btn_8, R.id.btn_9, R.id.btn_multiply,
                 R.id.btn_4, R.id.btn_5, R.id.btn_6, R.id.btn_add,
                 R.id.btn_1, R.id.btn_2, R.id.btn_3, R.id.btn_subtract,
-                R.id.btn_point, R.id.btn_0, R.id.btn_equals
+                R.id.btn_point, R.id.btn_0, R.id.btn_equal
         };
 
         for (int id : buttonIds) {
-            findViewById(id).setOnClickListener(this);
+            ImageButton button = findViewById(id);
+            button.setOnClickListener(this);
         }
     }
 
@@ -72,13 +72,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        MaterialButton button = (MaterialButton) view;
-        String buttonText = button.getText().toString();
+        ImageButton button = (ImageButton) view;
+        String buttonTag = (String) button.getTag();  // Use tag instead of text
         String currentInput = solutionTv.getText().toString();
 
         vibrateOnClick();
 
-        switch (buttonText) {
+        switch (buttonTag) {
             case "C":
                 clearData();
                 break;
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 calculateResult(currentInput);
                 break;
             default:
-                handleInput(buttonText, currentInput);
+                handleInput(buttonTag, currentInput);
                 break;
         }
     }
@@ -110,24 +110,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resultTv.setText(result);
     }
 
-    private void handleInput(String buttonText, String currentInput) {
+    private void handleInput(String buttonTag, String currentInput) {
         int numericCount = countNumericCharacters(currentInput);
 
-        if (!isOperator(buttonText) && numericCount >= 15) {
+        if (!isOperator(buttonTag) && numericCount >= 15) {
             Toast.makeText(this, "You can only input up to 15 numbers", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (isOperator(buttonText)) {
+        if (isOperator(buttonTag)) {
             if (!currentInput.isEmpty()) {
                 char lastChar = currentInput.charAt(currentInput.length() - 1);
                 if (isOperator(String.valueOf(lastChar))) {
                     currentInput = currentInput.substring(0, currentInput.length() - 1);
                 }
-                currentInput += buttonText;
+                currentInput += buttonTag;
             }
         } else {
-            currentInput = currentInput.equals("0") ? buttonText : currentInput + buttonText;
+            currentInput = currentInput.equals("0") ? buttonTag : currentInput + buttonTag;
         }
         solutionTv.setText(currentInput);
     }
