@@ -8,7 +8,6 @@ import android.os.Vibrator;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         ImageButton button = (ImageButton) view;
-        String buttonTag = (String) button.getTag();  // Use tag instead of text
+        String buttonTag = (String) button.getTag();
         String currentInput = solutionTv.getText().toString();
 
         vibrateOnClick();
@@ -111,13 +110,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void handleInput(String buttonTag, String currentInput) {
-        int numericCount = countNumericCharacters(currentInput);
-
-        if (!isOperator(buttonTag) && numericCount >= 15) {
-            Toast.makeText(this, "You can only input up to 15 numbers", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         if (isOperator(buttonTag)) {
             if (!currentInput.isEmpty()) {
                 char lastChar = currentInput.charAt(currentInput.length() - 1);
@@ -132,22 +124,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         solutionTv.setText(currentInput);
     }
 
-    private int countNumericCharacters(String input) {
-        int count = 0;
-        for (char ch : input.toCharArray()) {
-            if (Character.isDigit(ch)) {
-                count++;
-            }
-        }
-        return count;
-    }
-
     private boolean isOperator(String ch) {
         return "+-×÷%".contains(ch);
     }
 
     private void vibrateOnClick() {
-        if (vibrator != null) {
+        if (vibrator != null && vibrator.hasVibrator()) {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
             } else {
@@ -155,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
 
     private String getResult(String expression) {
         try {

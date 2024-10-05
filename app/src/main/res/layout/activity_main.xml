@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
@@ -10,12 +9,13 @@
 
 
     <LinearLayout
-        android:layout_width="360dp"
-        android:layout_height="270dp"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="32dp"
         android:background="@drawable/solnborder"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/buttons_layout"
-        android:layout_margin="24dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -24,12 +24,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
             android:text=""
             android:textAlignment="textEnd"
             android:textColor="@color/translucentBlack"
-            android:textSize="32sp"
+            android:textSize="24sp"
             tools:ignore="HardcodedText" />
 
         <TextView
@@ -38,22 +36,21 @@
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
             android:layout_margin="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
             android:text=""
             android:textAlignment="textEnd"
             android:textColor="@color/black"
-            android:textSize="48sp" />
+            android:textSize="32sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/buttons_layout"
-        android:layout_width="360dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_marginStart="32dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/border"
         android:orientation="vertical"
         android:paddingVertical="16dp">
@@ -67,8 +64,8 @@
             <ImageButton
                 android:id="@+id/btn_c"
                 android:tag="C"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:layout_margin="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
@@ -77,8 +74,8 @@
             <ImageButton
                 android:id="@+id/btn_del"
                 android:tag="⌫"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:layout_margin="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
@@ -86,8 +83,8 @@
 
             <ImageButton
                 android:id="@+id/btn_percent"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:layout_margin="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
@@ -97,8 +94,8 @@
             <ImageButton
                 android:id="@+id/btn_divide"
                 android:tag="÷"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_divide" />
@@ -113,8 +110,8 @@
             <ImageButton
                 android:id="@+id/btn_7"
                 android:tag="7"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:layout_margin="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
@@ -123,8 +120,8 @@
             <ImageButton
                 android:id="@+id/btn_8"
                 android:tag="8"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:layout_margin="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
@@ -133,8 +130,8 @@
             <ImageButton
                 android:id="@+id/btn_9"
                 android:tag="9"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:layout_margin="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
@@ -143,8 +140,8 @@
             <ImageButton
                 android:id="@+id/btn_multiply"
                 android:tag="×"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_multiply" />
@@ -159,8 +156,8 @@
             <ImageButton
                 android:id="@+id/btn_4"
                 android:tag="4"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:layout_margin="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
@@ -169,8 +166,8 @@
             <ImageButton
                 android:id="@+id/btn_5"
                 android:tag="5"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:layout_margin="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
@@ -179,8 +176,8 @@
             <ImageButton
                 android:id="@+id/btn_6"
                 android:tag="6"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:layout_margin="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
@@ -189,8 +186,8 @@
             <ImageButton
                 android:id="@+id/btn_add"
                 android:tag="+"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_add" />
@@ -205,8 +202,8 @@
             <ImageButton
                 android:id="@+id/btn_1"
                 android:tag="1"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:layout_margin="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
@@ -215,8 +212,8 @@
             <ImageButton
                 android:id="@+id/btn_2"
                 android:tag="2"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:layout_margin="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
@@ -225,8 +222,8 @@
             <ImageButton
                 android:id="@+id/btn_3"
                 android:tag="3"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:layout_margin="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
@@ -235,8 +232,8 @@
             <ImageButton
                 android:id="@+id/btn_subtract"
                 android:tag="-"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_subtract" />
@@ -251,8 +248,8 @@
             <ImageButton
                 android:id="@+id/btn_point"
                 android:tag="."
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:layout_margin="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
@@ -261,8 +258,8 @@
             <ImageButton
                 android:id="@+id/btn_0"
                 android:tag="0"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:layout_margin="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
@@ -271,8 +268,8 @@
             <ImageButton
                 android:id="@+id/btn_equal"
                 android:tag="="
-                android:layout_width="156dp"
-                android:layout_height="78dp"
+                android:layout_width="150dp"
+                android:layout_height="76dp"
                 android:layout_margin="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
