@@ -1,10 +1,12 @@
 package com.example.access;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -13,18 +15,20 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.button.MaterialButton;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView resultTv, solutionTv;
-    Vibrator vibrator;
+    private TextView resultTv, solutionTv;
+    private Vibrator vibrator;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        playOpeningSound();
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -36,92 +40,96 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resultTv = findViewById(R.id.result_tv);
         solutionTv = findViewById(R.id.solution_tv);
 
-        assignId(R.id.btn_c);
-        assignId(R.id.btn_del);
-        assignId(R.id.btn_percent);
-        assignId(R.id.btn_divide);
-        assignId(R.id.btn_7);
-        assignId(R.id.btn_8);
-        assignId(R.id.btn_9);
-        assignId(R.id.btn_multiply);
-        assignId(R.id.btn_4);
-        assignId(R.id.btn_5);
-        assignId(R.id.btn_6);
-        assignId(R.id.btn_add);
-        assignId(R.id.btn_1);
-        assignId(R.id.btn_2);
-        assignId(R.id.btn_3);
-        assignId(R.id.btn_subtract);
-        assignId(R.id.btn_point);
-        assignId(R.id.btn_0);
-        assignId(R.id.btn_equals);
+        int[] buttonIds = {
+                R.id.btn_c, R.id.btn_del, R.id.btn_percent, R.id.btn_divide,
+                R.id.btn_7, R.id.btn_8, R.id.btn_9, R.id.btn_multiply,
+                R.id.btn_4, R.id.btn_5, R.id.btn_6, R.id.btn_add,
+                R.id.btn_1, R.id.btn_2, R.id.btn_3, R.id.btn_subtract,
+                R.id.btn_point, R.id.btn_0, R.id.btn_equal
+        };
+
+        for (int id : buttonIds) {
+            ImageButton button = findViewById(id);
+            button.setOnClickListener(this);
+        }
     }
 
-    void assignId(int id) {
-        MaterialButton btn = findViewById(id);
-        btn.setOnClickListener(this);
+    private void playOpeningSound() {
+        mediaPlayer = MediaPlayer.create(this, R.raw.opening_music);
+        mediaPlayer.start();
+        mediaPlayer.setOnCompletionListener(MediaPlayer::release);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 
     @Override
     public void onClick(View view) {
-        MaterialButton button = (MaterialButton) view;
-        String buttonText = button.getText().toString();
-        String dataToCalculate = solutionTv.getText().toString();
+        ImageButton button = (ImageButton) view;
+        String buttonTag = (String) button.getTag();
+        String currentInput = solutionTv.getText().toString();
 
         vibrateOnClick();
 
-        switch (buttonText) {
+        switch (buttonTag) {
             case "C":
-                solutionTv.setText("");
-                resultTv.setText("0");
-                return;
+                clearData();
+                break;
             case "⌫":
-                if (!dataToCalculate.isEmpty()) {
-                    dataToCalculate = dataToCalculate.substring(0, dataToCalculate.length() - 1);
-                }
+                deleteLastCharacter(currentInput);
                 break;
             case "=":
-                String result = getResult(dataToCalculate);
-                resultTv.setText(result);
-                return;
+                calculateResult(currentInput);
+                break;
             default:
-                if (isOperator(buttonText)) {
-                    if (dataToCalculate.isEmpty()) {
-                        if (buttonText.equals("-")) {
-                            dataToCalculate = "-";
-                        }
-                    } else {
-                        char lastChar = dataToCalculate.charAt(dataToCalculate.length() - 1);
-
-                        if (isOperator(Character.toString(lastChar))) {
-                            if (buttonText.equals("-") && lastChar != '-') {
-                                dataToCalculate += buttonText;
-                            } else {
-                                dataToCalculate = dataToCalculate.substring(0, dataToCalculate.length() - 1) + buttonText;
-                            }
-                        } else {
-                            dataToCalculate += buttonText;
-                        }
-                    }
-                } else {
-                    if (dataToCalculate.equals("0")) {
-                        dataToCalculate = buttonText;
-                    } else {
-                        dataToCalculate += buttonText;
-                    }
-                }
+                handleInput(buttonTag, currentInput);
                 break;
         }
+    }
 
-        solutionTv.setText(dataToCalculate);
+    private void clearData() {
+        solutionTv.setText("");
+        resultTv.setText("0");
+    }
+
+    private void deleteLastCharacter(String currentInput) {
+        if (!currentInput.isEmpty()) {
+            solutionTv.setText(currentInput.substring(0, currentInput.length() - 1));
+        }
+    }
+
+    private void calculateResult(String currentInput) {
+        String result = getResult(currentInput);
+        resultTv.setText(result);
+    }
+
+    private void handleInput(String buttonTag, String currentInput) {
+        if (isOperator(buttonTag)) {
+            if (!currentInput.isEmpty()) {
+                char lastChar = currentInput.charAt(currentInput.length() - 1);
+                if (isOperator(String.valueOf(lastChar))) {
+                    currentInput = currentInput.substring(0, currentInput.length() - 1);
+                }
+                currentInput += buttonTag;
+            }
+        } else {
+            currentInput = currentInput.equals("0") ? buttonTag : currentInput + buttonTag;
+        }
+        solutionTv.setText(currentInput);
     }
 
     private boolean isOperator(String ch) {
-        return ch.equals("+") || ch.equals("-") || ch.equals("×") || ch.equals("÷") || ch.equals("%");
+        return "+-×÷%".contains(ch);
     }
 
     private void vibrateOnClick() {
-        if (vibrator != null) {
+        if (vibrator != null && vibrator.hasVibrator()) {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
             } else {
@@ -130,48 +138,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    String getResult(String data) {
+
+    private String getResult(String expression) {
         try {
-            double result = evaluateExpression(data);
-            if (result == (long) result) {
-                return String.valueOf((long) result);
-            } else {
-                return String.valueOf(result);
-            }
+            double result = evaluateExpression(expression);
+            return result == (long) result ? String.valueOf((long) result) : String.valueOf(result);
         } catch (Exception e) {
             return "Error";
         }
     }
 
-    double evaluateExpression(String data) {
+    private double evaluateExpression(String expression) {
         double result = 0.0;
-        char lastOperator = '+';
-        StringBuilder number = new StringBuilder();
+        char operator = '+';
+        StringBuilder numberBuilder = new StringBuilder();
 
-        for (int i = 0; i < data.length(); i++) {
-            char ch = data.charAt(i);
-
-            if (ch == '-' && (i == 0 || isOperator(Character.toString(data.charAt(i - 1))))) {
-                number.append(ch);
-            } else if (Character.isDigit(ch) || ch == '.') {
-                number.append(ch);
+        for (char ch : expression.toCharArray()) {
+            if (Character.isDigit(ch) || ch == '.') {
+                numberBuilder.append(ch);
             } else {
-                if (number.length() > 0) {
-                    result = applyOperation(result, Double.parseDouble(number.toString()), lastOperator);
-                    number.setLength(0);
+                if (numberBuilder.length() > 0) {
+                    result = applyOperation(result, Double.parseDouble(numberBuilder.toString()), operator);
+                    numberBuilder.setLength(0);
                 }
-                lastOperator = ch;
+                operator = ch;
             }
         }
 
-        if (number.length() > 0) {
-            result = applyOperation(result, Double.parseDouble(number.toString()), lastOperator);
+        if (numberBuilder.length() > 0) {
+            result = applyOperation(result, Double.parseDouble(numberBuilder.toString()), operator);
         }
 
         return result;
     }
 
-    double applyOperation(double result, double number, char operator) {
+    private double applyOperation(double result, double number, char operator) {
         switch (operator) {
             case '+':
                 return result + number;
